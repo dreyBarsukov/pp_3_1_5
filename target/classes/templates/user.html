@@ -17,15 +17,9 @@
     <title>User page</title>
 </head>
 <body>
-
 <nav class="navbar navbar-expand-xl navbar-light" style="background-color: #477979;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <td th:utext="${user.getEmail()}">...</td>
-            with role:
-            <tr th:each="role: ${roles}">
-                <td th:utext="${role.getName().replace('ROLE_', '') + ' '}">...</td>
-        </a>
+    <div id="test" class="container-fluid">
+        <a class="navbar-brand number1" href="#"></a>
         <a th:href="@{/logout}" class="float-right btn text-secondary">Logout</a>
     </div>
     </div>
@@ -42,7 +36,7 @@
     <div class="col-10">
         <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                <h1>User information-page</h1>
+                <h1 id="hello">User information-page</h1>
                 <div class="container-fluid px-lg-5">
                     <div class="row">
                         <div class="col-10 px-lg-5 border bg-light align-items-center">
@@ -61,15 +55,7 @@
                                     <th scope="col">Role</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:utext="${user.getId()}">...</td>
-                                    <td th:utext="${user.getFirstName()}">...</td>
-                                    <td th:utext="${user.getLastName()}">...</td>
-                                    <td th:utext="${user.getEmail()}">...</td>
-                                    <td th:utext="${user.getRolesToString()}">...</td>
-                                </tr>
-                                </tbody>
+                                <tbody class="UserInfo">
                             </table>
                         </div>
                     </div>
@@ -87,5 +73,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <script src="../static/js/user2.js"></script>
+</div>
 </body>
 </html>
