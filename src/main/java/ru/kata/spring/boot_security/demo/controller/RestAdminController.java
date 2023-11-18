@@ -55,4 +55,23 @@ public class RestAdminController {
     public List<Role> getRoles() {
         return roleService.findAll();
     }
+
+    @DeleteMapping("/users/delete")
+    public ResponseEntity<List<User>> delete(@RequestParam(value = "id") Long id) {
+        userService.delete(id);
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    }
+
+    @PutMapping("/users/update")
+    public ResponseEntity<List<User>> update(@RequestParam(value = "ids") String ids, @RequestParam(value = "id") Long id,
+                         @RequestBody User user) {
+        userService.update(id, user, List.of(ids));
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/users/new")
+    public ResponseEntity<List<User>> create(@RequestParam(value = "ids") String ids, @RequestBody User user) {
+        userService.save(user, List.of(ids));
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    }
 }

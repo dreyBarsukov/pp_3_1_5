@@ -104,8 +104,8 @@ async function CreateEditModal() {
         password: passwordEdit,
         roles: selectedValues
     }
-    await fetch(`http://localhost:7072/admin/users/update?id=${idEdit}&ids=${selectedValues}`, {
-        method: 'POST',
+    await fetch(`http://localhost:7072/api/admin/users/update?id=${idEdit}&ids=${selectedValues}`, {
+        method: 'PUT',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'
@@ -117,8 +117,8 @@ async function CreateEditModal() {
 
 async function CreateDeleteModal() {
     let idDelete = document.getElementById('idDelete').value;
-    await fetch(`http://localhost:7072/admin/users/delete?id=${idDelete}`, {
-        method: 'POST'
+    await fetch(`http://localhost:7072/api/admin/users/delete?id=${idDelete}`, {
+        method: 'DELETE'
     });
     allUsers();
 }
@@ -141,7 +141,7 @@ async function addNewUser() {
         password: passwordNew,
         roles: rolesNewVal
     }
-    await fetch(`http://localhost:7072/admin/users/new?ids=${rolesNewVal}`, {
+    await fetch(`http://localhost:7072/api/admin/users/new?ids=${rolesNewVal}`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -149,7 +149,7 @@ async function addNewUser() {
         },
         body: JSON.stringify(userNew)
     });
-    await allUsers()
+    allUsers()
 }
 
 async function getAdminInfo() {

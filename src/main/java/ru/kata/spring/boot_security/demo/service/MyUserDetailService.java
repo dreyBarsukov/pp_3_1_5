@@ -7,23 +7,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.RoleDao;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Set;
 
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
-    private UserDao userDao;
-    private RoleDao roleDao;
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public MyUserDetailService(UserDao userDao, RoleDao roleDao) {
-        this.userDao = userDao;
-        this.roleDao = roleDao;
+    public MyUserDetailService(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public MyUserDetailService() {
@@ -31,8 +31,8 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User byUsername = userDao.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User byUsername = userRepository.findByEmail(email);
         Hibernate.initialize(byUsername.getRoles());
         Set<Role> roles = byUsername.getRoles();
         System.out.println(roles);
