@@ -8,15 +8,17 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public User findOne(long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional
@@ -65,64 +67,11 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     public void delete(long id) {
-        userRepository.deleteById(id);
+        try {
+            User one = findOne(id);
+            userRepository.deleteById(id);
+        } catch (NoSuchElementException e) {
+            throw e;
+        }
     }
-
-    //    private UserDao userDao;
-//    private RoleService roleService;
-//    private PasswordEncoder passwordEncoder;
-//
-//    @Autowired
-//    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, RoleService roleService) {
-//        this.userDao = userDao;
-//        this.roleService = roleService;
-//        this.passwordEncoder = passwordEncoder;
-//    }
-//
-//    public UserServiceImpl() {
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public List<User> findAll() {
-//        return userDao.findAll();
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public User findOne(long id) {
-//        return userDao.findOne(id);
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void save(User user, List<String> roles) {
-//        Set<Role> roleSet = new HashSet<>();
-//        for (String role : roles) {
-//            roleSet.add(roleService.findByName(role));
-//        }
-//        String encode = passwordEncoder.encode(user.getPassword());
-//        user.setPassword(encode);
-//        user.setRoles(roleSet);
-//        userDao.save(user);
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void update(long id, User updeteUser, List<String> roles) {
-//        Set<Role> roleSet = new HashSet<>();
-//        for (String role : roles) {
-//            roleSet.add(roleService.findByName(role));
-//        }
-//        String encode = passwordEncoder.encode(updeteUser.getPassword());
-//        updeteUser.setRoles(roleSet);
-//        updeteUser.setPassword(encode);
-//        userDao.update(id, updeteUser);
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void delete(long id) {
-//        userDao.delete(id);
-//    }
 }

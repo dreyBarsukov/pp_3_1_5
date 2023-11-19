@@ -6,17 +6,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
 @RestController
+@Validated
 @ResponseBody
 @RequestMapping("/api/admin")
 public class RestAdminController {
@@ -63,14 +73,15 @@ public class RestAdminController {
     }
 
     @PutMapping("/users/update")
-    public ResponseEntity<List<User>> update(@RequestParam(value = "ids") String ids, @RequestParam(value = "id") Long id,
-                         @RequestBody User user) {
-        userService.update(id, user, List.of(ids));
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<User>> update(@RequestParam(value = "ids") @NotBlank(message = "не выбрана роль") String ids, @RequestParam(value = "id") Long id,
+                                             @RequestBody @Valid User user, BindingResult bindingResult) {
+            userService.update(id, user, List.of(ids));
+            return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/users/new")
-    public ResponseEntity<List<User>> create(@RequestParam(value = "ids") String ids, @RequestBody User user) {
+    public ResponseEntity<List<User>> create(@RequestParam(value = "ids") @NotBlank String ids,
+                                             @Valid @RequestBody User user, BindingResult bindingResult) {
         userService.save(user, List.of(ids));
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }

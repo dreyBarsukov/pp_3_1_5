@@ -2,7 +2,15 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 

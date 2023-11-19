@@ -104,7 +104,7 @@ async function CreateEditModal() {
         password: passwordEdit,
         roles: selectedValues
     }
-    await fetch(`http://localhost:7072/api/admin/users/update?id=${idEdit}&ids=${selectedValues}`, {
+    let response = await fetch(`http://localhost:7072/api/admin/users/update?id=${idEdit}&ids=${selectedValues}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -141,6 +141,7 @@ async function addNewUser() {
         password: passwordNew,
         roles: rolesNewVal
     }
+    console.log(userNew)
     await fetch(`http://localhost:7072/api/admin/users/new?ids=${rolesNewVal}`, {
         method: 'POST',
         headers: {
